@@ -19,6 +19,8 @@ func NuggetIndex(w http.ResponseWriter, r *http.Request) {
 		models.Nugget{Username: "djung", Title: "Sample Nugget 2", Category: "REST", Body: "Sample Rest"},
 	}
 
+	setHeader(w)
+
 	if err := json.NewEncoder(w).Encode(nuggets); err != nil {
 		panic(err)
 	}
@@ -28,4 +30,10 @@ func NuggetShow(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	nuggetid := vars["nuggetid"]
 	fmt.Fprintln(w, "Nugget show:", nuggetid)
+}
+
+func setHeader(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+
 }

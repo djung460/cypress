@@ -4,10 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	routes "github.com/djung460/cypress/routes"
+	route "github.com/djung460/cypress/route"
 )
 
 func main() {
-	router := routes.NewRouter()
+	router := route.NewRouter()
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

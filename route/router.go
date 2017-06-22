@@ -1,26 +1,20 @@
 package route
 
 import (
-	"net/http"
-
 	"github.com/gorilla/mux"
 
-	logger "github.com/djung460/cypress/logger"
+	"github.com/djung460/cypress/handlers"
+	"github.com/djung460/cypress/models"
 )
 
-func NewRouter() *mux.Router {
+func NewRouter(db models.DB) *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
-	for _, route := range routes {
-		var handler http.Handler
-		handler = route.HandlerFunc
-		handler = logger.Logger(handler, route.Name)
 
-		router.
-			Methods(route.Method).
-			Path(route.Pattern).
-			Name(route.Name).
-			Handler(handler)
+	router.Handle("/", handlers.Index()).Methods("GET")
+	router.Handle("/api/nuggets", handlers.UserNuggetIndex(db)).Methods("GET")
+	router.Handle("/api/nugget/create", handlers.NuggetCreate(db)).Methods("POST")
+	router.Handle("/api/categories", handlers.CategoryIndex(db)).Methods("GET")
+	router.Handle("/api/category/create", handlers.CategoryCreate(db)).Methods("POST")
 
-	}
 	return router
 }
